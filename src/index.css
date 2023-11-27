@@ -1,5 +1,10 @@
-* {
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-left: 1rem;
 }
 
 h2 {
@@ -10,6 +15,14 @@ h2 {
   color: grey;
   padding-top: 3px;
   font-size: 15px;
+}
+
+.blogStyle {
+  padding-top: 10px;
+  padding-left: 2px;
+  border: 1px solid black;
+  border-width: 1px;
+  margin-bottom: 5px;
 }
 
 .error {

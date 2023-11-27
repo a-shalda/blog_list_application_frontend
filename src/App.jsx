@@ -40,7 +40,6 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-
     } catch {
       setMessage('Invalid blog')
       setMessageClassName('error')
@@ -49,7 +48,6 @@ const App = () => {
       }, 5000)
     }
   }
-
 
   return (
     <div>
@@ -93,7 +91,10 @@ const App = () => {
         </div>
       }
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+        />
       )}
     </div>
   )
