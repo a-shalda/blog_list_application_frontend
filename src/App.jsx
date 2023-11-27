@@ -20,6 +20,9 @@ const App = () => {
     )
   }, [])
 
+  // console.log(blogs)
+
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -34,7 +37,17 @@ const App = () => {
 
     try {
       const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
+      const updatedBlog = {
+        author: blog.author,
+        id: blog.id,
+        likes: blog.likes,
+        title: blog.title,
+        url: blog.url,
+        user: {
+          name: user.name
+        }
+      }
+      setBlogs(blogs.concat(updatedBlog))
       setMessage(`A new blog ${blogObject.title} by ${blogObject.author} added`)
       setMessageClassName('success')
       setTimeout(() => {
