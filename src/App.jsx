@@ -8,8 +8,6 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
-  const [showAll, setShowAll] = useState(true)
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [messageClassName, setMessageClassName] = useState('')
@@ -30,6 +28,27 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const addBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+
+    try {
+      const blog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(blog))
+      setMessage(`A new blog ${blogObject.title} by ${blogObject.author} added`)
+      setMessageClassName('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+
+    } catch {
+      setMessage('Invalid blog')
+      setMessageClassName('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
 
 
   return (
@@ -63,6 +82,7 @@ const App = () => {
 
           <Togglable buttonLabel='new blog' ref={blogFormRef}>
             <CreateNewBlog
+              addBlog={addBlog}
               blogs={blogs}
               setBlogs={setBlogs}
               setMessage={setMessage}
