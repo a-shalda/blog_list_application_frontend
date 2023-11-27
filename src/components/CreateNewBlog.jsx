@@ -36,6 +36,16 @@ const CreateNewBlog = ({ blogs, setBlogs, setMessage, setMessageClassName }) => 
     }
   }
 
+  const createBlog = (event) => {
+    event.preventDefault()
+    createNote({
+      content: newNote,
+      important: true
+    })
+
+    setNewNote('')
+  }
+
 
   return (
     <form onSubmit={addBlog}>

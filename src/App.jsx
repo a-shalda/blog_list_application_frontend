@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import blogService from './services/blogs'
 import Blog from './components/Blog'
 import CreateNewBlog from './components/CreateNewBlog'
 import Login from './components/Login'
-import blogService from './services/blogs'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,6 +13,8 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [messageClassName, setMessageClassName] = useState('')
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -28,6 +31,7 @@ const App = () => {
     }
   }, [])
 
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -37,12 +41,14 @@ const App = () => {
       />
 
       {user === null &&
-        <Login
-          setUser={setUser}
-          setMessage={setMessage}
-          setMessageClassName={setMessageClassName}
-        />}
-
+        <Togglable buttonLabel='log in'>
+          <Login
+            setUser={setUser}
+            setMessage={setMessage}
+            setMessageClassName={setMessageClassName}
+          />
+        </Togglable>
+      }
       {user &&
         <div>
           <p>{user.name} logged in</p>
@@ -55,18 +61,20 @@ const App = () => {
           </button>
           <h2>create new</h2>
 
-          <CreateNewBlog
-            blogs={blogs}
-            setBlogs={setBlogs}
-            setMessage={setMessage}
-            setMessageClassName={setMessageClassName}
-          />
+          <Togglable buttonLabel='new blog' ref={blogFormRef}>
+            <CreateNewBlog
+              blogs={blogs}
+              setBlogs={setBlogs}
+              setMessage={setMessage}
+              setMessageClassName={setMessageClassName}
+            />
+          </Togglable>
 
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
         </div>
       }
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}
     </div>
   )
 }

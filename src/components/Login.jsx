@@ -53,7 +53,7 @@ const Login = ({ setUser, setMessage, setMessageClassName }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit">log in</button>
     </form>
   )
 }
