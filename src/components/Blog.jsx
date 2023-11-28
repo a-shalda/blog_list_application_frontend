@@ -21,7 +21,6 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
   const addLike = async () => {
 
     const updatedBlog = { likes: likes + 1 }
-    console.log(window.localStorage)
 
     try {
       await blogService.update(blog.id, updatedBlog)
@@ -40,8 +39,11 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
   )
 
   const content = (
-    !viewBlog ? <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p> :
-      <div className='blogStyle'>
+    !viewBlog ?
+      <div className='blog'>
+        <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
+      </div> :
+      <div className='blogView'>
         <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
         <p>{blog.url}</p>
         <p>Likes: {likes}
@@ -52,17 +54,13 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
       </div>
   )
 
-  return (
-    <div>
-      {content}
-    </div>
-  )
+  return content
 }
 
-Blog.propTypes = {
-  deleteThisBlog: PropTypes.func.isRequired,
-  setMessage: PropTypes.func.isRequired,
-  setMessageClassName: PropTypes.func.isRequired,
-}
+// Blog.propTypes = {
+//   deleteThisBlog: PropTypes.func.isRequired,
+//   setMessage: PropTypes.func.isRequired,
+//   setMessageClassName: PropTypes.func.isRequired,
+// }
 
 export default Blog

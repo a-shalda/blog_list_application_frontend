@@ -11,13 +11,7 @@ h2 {
   color: green;
 }
 
-.blog {
-  color: grey;
-  padding-top: 3px;
-  font-size: 15px;
-}
-
-.blogStyle {
+.blogView {
   padding-top: 10px;
   padding-left: 2px;
   border: 1px solid black;

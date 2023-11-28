@@ -46,7 +46,6 @@ const App = () => {
           name: user.name
         }
       }
-      // console.log(blog, updatedBlog)
       setBlogs(blogs.concat(updatedBlog))
       setMessage(`A new blog ${blogObject.title} by ${blogObject.author} added`)
       setMessageClassName('success')

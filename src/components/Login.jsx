@@ -19,7 +19,6 @@ const Login = ({ setUser, setMessage, setMessageClassName }) => {
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      console.log(user)
       setUser(user)
       setUsername('')
       setPassword('')
