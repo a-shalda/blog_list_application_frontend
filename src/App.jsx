@@ -15,13 +15,11 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs => {
+      blogs = blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs)
-    )
+    })
   }, [])
-
-  // console.log(blogs)
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -68,6 +66,22 @@ const App = () => {
     setUser(null)
   }
 
+  const deleteThisBlog = async (id, title) => {
+    const updatedBlogs = blogs.filter(blog => blog.id !== id)
+    if (window.confirm(`Removing blog ${title}`)) {
+      try {
+        await blogService.deleteBlog(id)
+        setBlogs(updatedBlogs)
+      } catch {
+        setMessage('You can remove only your blogs')
+        setMessageClassName('error')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }
+    }
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -111,6 +125,9 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user}
+          setMessage={setMessage}
+          setMessageClassName={setMessageClassName}
+          deleteThisBlog={deleteThisBlog}
         />
       )}
     </div>

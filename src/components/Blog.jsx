@@ -2,7 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog }) => {
 
   let initialLikes = 0
   blog.likes && (initialLikes = blog.likes)
@@ -24,9 +24,8 @@ const Blog = ({ blog }) => {
     try {
       await blogService.update(blog.id, updatedBlog)
       setLikes(likes + 1)
-
     } catch {
-      setMessage('Error updating likes')
+      setMessage('Only logged in users can update blogs')
       setMessageClassName('error')
       setTimeout(() => {
         setMessage(null)
@@ -40,13 +39,12 @@ const Blog = ({ blog }) => {
         <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
         <p>{blog.url}</p>
         <p>Likes: {likes}
-          <button
-            onClick={addLike}
-          >
-            like
-          </button>
+          <button onClick={addLike}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        <button onClick={() => deleteThisBlog(blog.id, blog.title)}>
+          remove
+        </button>
       </div>
   )
 

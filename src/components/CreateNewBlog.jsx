@@ -14,6 +14,10 @@ const CreateNewBlog = ({ addBlog }) => {
       author: author,
       url: url
     })
+
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
