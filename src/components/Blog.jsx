@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 
 const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) => {
@@ -20,6 +21,7 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
   const addLike = async () => {
 
     const updatedBlog = { likes: likes + 1 }
+    console.log(window.localStorage)
 
     try {
       await blogService.update(blog.id, updatedBlog)
@@ -56,4 +58,11 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
     </div>
   )
 }
+
+Blog.propTypes = {
+  deleteThisBlog: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  setMessageClassName: PropTypes.func.isRequired,
+}
+
 export default Blog

@@ -64,6 +64,7 @@ const App = () => {
 
   const revokeToken = () => {
     window.localStorage.removeItem('loggedBlogappUser')
+    blogService.setToken(null)
     setUser(null)
   }
 
