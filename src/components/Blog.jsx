@@ -2,7 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog }) => {
+const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) => {
 
   let initialLikes = 0
   blog.likes && (initialLikes = blog.likes)
@@ -33,18 +33,18 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog }) => {
     }
   }
 
+  const showDelete = (
+    (user.username === blog.user.name) && <button onClick={() => deleteThisBlog(blog.id, blog.title)}>remove</button>
+  )
+
   const content = (
     !viewBlog ? <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p> :
       <div className='blogStyle'>
         <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
         <p>{blog.url}</p>
-        <p>Likes: {likes}
-          <button onClick={addLike}>like</button>
-        </p>
+        <p>Likes: {likes} </p>
         <p>{blog.user.name}</p>
-        <button onClick={() => deleteThisBlog(blog.id, blog.title)}>
-          remove
-        </button>
+        {showDelete}
       </div>
   )
 

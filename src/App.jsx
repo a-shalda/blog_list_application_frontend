@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
