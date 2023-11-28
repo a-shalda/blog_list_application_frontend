@@ -47,6 +47,7 @@ const App = () => {
           name: user.name
         }
       }
+      // console.log(blog, updatedBlog)
       setBlogs(blogs.concat(updatedBlog))
       setMessage(`A new blog ${blogObject.title} by ${blogObject.author} added`)
       setMessageClassName('success')
@@ -60,6 +61,11 @@ const App = () => {
         setMessage(null)
       }, 5000)
     }
+  }
+
+  const revokeToken = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
   }
 
   return (
@@ -83,10 +89,7 @@ const App = () => {
         <div>
           <p>{user.name} logged in</p>
           <button
-            onClick={() => {
-              window.localStorage.removeItem('loggedBlogappUser')
-              setUser(null)
-            }}
+            onClick={revokeToken}
           >Log out
           </button>
           <h2>create new</h2>
@@ -107,6 +110,7 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
+          user={user}
         />
       )}
     </div>
