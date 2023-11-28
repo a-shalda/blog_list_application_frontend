@@ -42,7 +42,9 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
       <div className='blogStyle'>
         <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
         <p>{blog.url}</p>
-        <p>Likes: {likes} </p>
+        <p>Likes: {likes}
+          <button onClick={addLike}>like</button>
+        </p>
         <p>{blog.user.name}</p>
         {showDelete}
       </div>
