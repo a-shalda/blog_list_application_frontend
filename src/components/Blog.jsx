@@ -34,7 +34,7 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
   }
 
   const showDelete = (
-    (user.username === blog.user.name) && <button onClick={() => deleteThisBlog(blog.id, blog.title)}>remove</button>
+    user && blog && (user.username === blog.user.name) && <button onClick={() => deleteThisBlog(blog.id, blog.title)}>remove</button>
   )
 
   const content = (
