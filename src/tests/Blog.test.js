@@ -2,8 +2,6 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import Blog from '../components/Blog'
-import userEvent from '@testing-library/user-event'
-import BlogContent from '../components/BlogContent'
 
 
 const blog = {
@@ -32,27 +30,3 @@ test('renders content', () => {
     '52'
   )
 })
-
-// test('the blog\'s URL and number of likes are shown when the view button is clicked', async () => {
-
-//   const mockHandler = jest.fn()
-
-//   render(<BlogContent
-//     blog={blog}
-//     viewBlog={true}
-//     toggleViewBlog={mockHandler}
-//     buttonLabel={'view'}
-//     likes={0}
-//     addLike={0}
-//     showDelete={0}
-//   />)
-
-
-//   const user = userEvent.setup()
-//   const button = screen.getByText('view')
-//   await user.click(button)
-
-//   screen.debug()
-
-//   expect(mockHandler.mock.calls).toHaveLength(1)
-// })

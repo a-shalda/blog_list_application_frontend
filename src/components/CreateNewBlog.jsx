@@ -26,6 +26,7 @@ const CreateNewBlog = ({ addBlog }) => {
         title
         <input
           type="text"
+          id='title'
           value={title}
           name="Title"
           placeholder='Title'
@@ -36,6 +37,7 @@ const CreateNewBlog = ({ addBlog }) => {
         author
         <input
           type="text"
+          id='author'
           value={author}
           name="Author"
           placeholder='Author'
@@ -46,6 +48,7 @@ const CreateNewBlog = ({ addBlog }) => {
         url
         <input
           type="text"
+          id='url'
           value={url}
           name="URL"
           placeholder='URL'
