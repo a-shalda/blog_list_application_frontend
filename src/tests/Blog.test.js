@@ -1,16 +1,20 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import Blog from './Blog'
+import Blog from '../components/Blog'
+import userEvent from '@testing-library/user-event'
+import BlogContent from '../components/BlogContent'
 
+
+const blog = {
+  title: 'Go To Statement Considered Harmful',
+  author: 'Edsger W. Dijkstra',
+  url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+  likes: 52,
+  user: { name: 'Alex' }
+}
 
 test('renders content', () => {
-  const blog = {
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 52
-  }
 
   const { container } = render(<Blog blog={blog} />)
 
@@ -29,20 +33,26 @@ test('renders content', () => {
   )
 })
 
-
-// test('clicking the button calls event handler once', async () => {
-//   const blog = {
-//     title: 'Component testing is done with react-testing-library',
-//   }
+// test('the blog\'s URL and number of likes are shown when the view button is clicked', async () => {
 
 //   const mockHandler = jest.fn()
 
-//   render(
-//     <Blog blog={blog} toggleImportance={mockHandler} />
-//   )
+//   render(<BlogContent
+//     blog={blog}
+//     viewBlog={true}
+//     toggleViewBlog={mockHandler}
+//     buttonLabel={'view'}
+//     likes={0}
+//     addLike={0}
+//     showDelete={0}
+//   />)
+
+
 //   const user = userEvent.setup()
 //   const button = screen.getByText('view')
 //   await user.click(button)
+
+//   screen.debug()
 
 //   expect(mockHandler.mock.calls).toHaveLength(1)
 // })

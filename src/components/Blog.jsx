@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import BlogContent from './BlogContent'
 import PropTypes from 'prop-types'
 
 
@@ -19,7 +20,6 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
   }
 
   const addLike = async () => {
-
     const updatedBlog = { likes: likes + 1 }
 
     try {
@@ -38,23 +38,33 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
     user && blog && (user.username === blog.user.name) && <button onClick={() => deleteThisBlog(blog.id, blog.title)}>remove</button>
   )
 
-  const content = (
-    !viewBlog ?
-      <div className='blog'>
-        <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
-      </div> :
-      <div className='blogView'>
-        <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
-        <p>{blog.url}</p>
-        <p>Likes: {likes}
-          <button onClick={addLike}>like</button>
-        </p>
-        <p>{blog.user.name}</p>
-        {showDelete}
-      </div>
-  )
+  // const content = (
+  //   !viewBlog ?
+  //     <div className='blog'>
+  //       <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
+  //     </div> :
+  //     <div className='blogView'>
+  //       <p>{blog.title} by {blog.author} <button onClick={toggleViewBlog}>{buttonLabel}</button></p>
+  //       <p>{blog.url}</p>
+  //       <p>Likes: {likes}
+  //         <button onClick={addLike}>like</button>
+  //       </p>
+  //       <p>{blog.user.name}</p>
+  //       {showDelete}
+  //     </div>
+  // )
 
-  return content
+  // return content
+
+  return <BlogContent
+    blog={blog}
+    viewBlog={viewBlog}
+    toggleViewBlog={toggleViewBlog}
+    buttonLabel={buttonLabel}
+    likes={likes}
+    addLike={addLike}
+    showDelete={showDelete}
+  />
 }
 
 // Blog.propTypes = {
