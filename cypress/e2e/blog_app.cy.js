@@ -34,7 +34,7 @@ describe('Blog app', function() {
 
       cy.contains('Alex logged in')
     })
-
+    //All tests start from zero, need to log in first
     it('login fails with wrong password', function() {
       cy.contains('log in').click()
       cy.get('#username').type('Alex')
@@ -53,7 +53,6 @@ describe('Blog app', function() {
   })
 
   describe('when logged in', function() {
-    //need to log in first because each test starts from zero
 
     beforeEach(function() {
       cy.login({ username: 'Alex', password: 'secret' })
@@ -105,11 +104,11 @@ describe('Blog app', function() {
         cy.contains('First class tests').find('button').click()
         cy.contains('Second class tests').find('button').click()
 
-        cy.get('@secondBlog').contains(/Likes: 0/)
+        cy.get('@secondBlog').contains(/^Likes: 0/)
         cy.get('@secondBlog').contains('like').click()
-        cy.get('@secondBlog').contains(/Likes: 1/)
+        cy.get('@secondBlog').contains(/^Likes: 1/)
         cy.get('@secondBlog').contains('like').click()
-        cy.get('@secondBlog').contains(/Likes: 2/)
+        cy.get('@secondBlog').contains(/^Likes: 2/)
       })
 
       describe('delete blogs', function () {
@@ -133,6 +132,34 @@ describe('Blog app', function() {
           cy.get('@secondBlog').should('not.contain', 'Anna')
           cy.get('@secondBlog').should('not.contain', 'remove')
         })
+      })
+
+      it('ordered according to likes with the blog with the most likes being first', function () {
+
+        cy.contains('First class tests').parent('div').as('firstBlog')
+        cy.contains('Second class tests').parent('div').as('secondBlog')
+        cy.contains('Third class tests').parent('div').as('thirdBlog')
+
+        cy.contains('First class tests').find('button').click()
+        cy.contains('Second class tests').find('button').click()
+        cy.contains('Third class tests').find('button').click()
+
+        //Adding likes, waiting for the likes to update
+        cy.get('@firstBlog').contains('like').click()
+        cy.get('@firstBlog').contains(/^Likes: 1/)
+
+        cy.get('@secondBlog').contains('like').click()
+        cy.get('@secondBlog').contains(/^Likes: 1/)
+        cy.get('@secondBlog').contains('like').click()
+        cy.get('@secondBlog').contains(/^Likes: 2/)
+
+        cy.get('@thirdBlog').contains(/^Likes: 0/)
+
+        cy.visit('')
+
+        cy.get('.blog').eq(0).should('contain', 'Second class tests')
+        cy.get('.blog').eq(1).should('contain', 'First class tests')
+        cy.get('.blog').eq(2).should('contain', 'Third class tests')
       })
     })
   })
