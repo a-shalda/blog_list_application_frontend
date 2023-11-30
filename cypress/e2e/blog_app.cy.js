@@ -132,8 +132,6 @@ describe('Blog app', function() {
 
         cy.get('@thirdBlog').contains(/^Likes: 0/)
 
-        cy.visit('')
-
         cy.get('.blog').eq(0).should('contain', 'Second class tests')
         cy.get('.blog').eq(1).should('contain', 'First class tests')
         cy.get('.blog').eq(2).should('contain', 'Third class tests')

@@ -4,7 +4,7 @@ import BlogContent from './BlogContent'
 import PropTypes from 'prop-types'
 
 
-const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) => {
+const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user, sortBlogs }) => {
 
   let initialLikes = 0
   blog.likes && (initialLikes = blog.likes)
@@ -25,6 +25,7 @@ const Blog = ({ blog, setMessage, setMessageClassName, deleteThisBlog, user }) =
     try {
       await blogService.update(blog.id, updatedBlog)
       setLikes(likes + 1)
+      sortBlogs(blog.id, likes + 1)
     } catch {
       setMessage('Only logged in users can update blogs')
       setMessageClassName('error')

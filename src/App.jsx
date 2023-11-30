@@ -22,6 +22,26 @@ const App = () => {
     })
   }, [])
 
+  const sortBlogs = (id, increasedLikes) => {
+
+    const updatedBlogs = blogs.map(blog => {
+      if (blog.id === id) {
+        const updatedBlog = {
+          ...blog,
+          likes: increasedLikes,
+          user: {
+            ...user
+          }
+        }
+        return updatedBlog
+      }
+      return blog
+    })
+
+    const sortedUpdatedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes)
+    setBlogs(sortedUpdatedBlogs)
+  }
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -129,6 +149,7 @@ const App = () => {
           setMessage={setMessage}
           setMessageClassName={setMessageClassName}
           deleteThisBlog={deleteThisBlog}
+          sortBlogs={sortBlogs}
         />
       )}
     </div>
