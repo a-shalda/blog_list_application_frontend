@@ -31,7 +31,7 @@ test('the blog\'s URL and number of likes are shown when the view button is clic
 
   expect(mockHandler.mock.calls).toHaveLength(1)
 
-  const div = container.querySelector('.blogView')
+  const div = container.querySelector('.blog')
 
   expect(div).toHaveTextContent(
     'Go To Statement Considered Harmful'
