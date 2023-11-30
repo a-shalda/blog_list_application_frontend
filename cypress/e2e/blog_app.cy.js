@@ -1,30 +1,13 @@
-//Tests do not start from the state where the previous tests ended.
-
 describe('Blog app', function() {
   beforeEach(function() {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     const user = {
       name: 'Alex',
       username: 'Alex',
       password: 'secret'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)
-    cy.visit('http://localhost:5173')
-  })
-
-  it('login fails with wrong password', function() {
-    cy.contains('log in').click()
-    cy.get('#username').type('Alex')
-    cy.get('#password').type('wrong')
-    cy.get('#login-button').click()
-
-    cy.contains('Wrong credentials')
-    cy.get('.error').contains('Wrong credentials')
-    //Cypress requires the colors to be given as rgb.
-      .should('have.css', 'color', 'rgb(255, 0, 0)')
-      .and('have.css', 'border-style', 'solid')
-
-    cy.get('html').should('not.contain', 'Alex logged in')
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+    cy.visit('')
   })
 
 
@@ -45,17 +28,29 @@ describe('Blog app', function() {
 
       cy.contains('Alex logged in')
     })
-  })
 
+    it('login fails with wrong password', function() {
+      cy.contains('log in').click()
+      cy.get('#username').type('Alex')
+      cy.get('#password').type('wrong')
+      cy.get('#login-button').click()
+
+      cy.contains('Wrong credentials')
+      cy.get('.error').contains('Wrong credentials')
+      //Cypress requires the colors to be given as rgb.
+        .should('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'border-style', 'solid')
+
+      cy.get('html').should('not.contain', 'Alex logged in')
+      cy.contains('Alex logged in').should('not.exist')
+    })
+  })
 
   describe('when logged in', function() {
     //need to log in first because each test starts from zero
 
     beforeEach(function() {
-      cy.contains('log in').click()
-      cy.get('#username').type('Alex')
-      cy.get('#password').type('secret')
-      cy.get('#login-button').click()
+      cy.login({ username: 'Alex', password: 'secret' })
     })
 
     it('a new blog can be created', function() {
@@ -70,24 +65,45 @@ describe('Blog app', function() {
       cy.contains('Robert C. Martin')
     })
 
-
     describe('a blog exist', function() {
       beforeEach(function () {
-        cy.contains('new blog').click()
-        cy.get('#title').type('First class tests')
-        cy.get('#author').type('Robert C. Martin')
-        cy.get('#url').type('http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html')
-
-        cy.contains('Create').click()
+        cy.createBlog({
+          title: 'First class tests',
+          author: 'Robert C. Martin',
+          url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html'
+        })
       })
 
       it('can increase the number of likes', function () {
 
         cy.contains('First class tests')
-        cy.contains('view').click()
+          .contains('view').click()
         cy.contains('Likes: 0')
-        cy.contains('like').click()
+          .contains('like').click()
         cy.contains('Likes: 1')
+      })
+    })
+
+    describe('several blogs exist', function () {
+      beforeEach(function () {
+        cy.login({ username: 'Alex', password: 'secret' })
+        cy.createBlog({ title: 'First class tests', author: 'Robert C. Martin', url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html' })
+        cy.createBlog({ title: 'Second class tests', author: 'Robert C. Martin', url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html' })
+        cy.createBlog({ title: 'Third class tests', author: 'Robert C. Martin', url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html' })
+      })
+
+      it('can increase the number of likes of a specific blog', function () {
+
+        cy.contains('Second class tests').parent('div').as('secondBlog')
+
+        cy.contains('First class tests').find('button').click()
+        cy.contains('Second class tests').find('button').click()
+
+        cy.get('@secondBlog').contains(/Likes: 0/)
+        cy.get('@secondBlog').contains('like').click()
+        cy.get('@secondBlog').contains(/Likes: 1/)
+        cy.get('@secondBlog').contains('like').click()
+        cy.get('@secondBlog').contains(/Likes: 2/)
       })
     })
   })
