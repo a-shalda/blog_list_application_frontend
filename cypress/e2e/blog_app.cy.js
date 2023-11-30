@@ -111,29 +111,6 @@ describe('Blog app', function() {
         cy.get('@secondBlog').contains(/^Likes: 2/)
       })
 
-      describe('delete blogs', function () {
-
-        it('the user who created a blog can delete it', function() {
-          cy.contains('Second class tests').parent('div').as('secondBlog')
-          cy.contains('Second class tests').find('button').click()
-          cy.get('@secondBlog').contains('remove').click()
-          cy.get('html').should('not.contain', 'Second class tests')
-        })
-
-        it('only the creator can see the delete button of a blog', function() {
-
-          cy.contains('Log out').click()
-          cy.login({ username: 'Anna', password: 'secret' })
-          cy.contains('Anna logged in')
-
-          cy.contains('Second class tests').parent('div').as('secondBlog')
-          cy.contains('Second class tests').find('button').click()
-          cy.get('@secondBlog').contains('Alex')
-          cy.get('@secondBlog').should('not.contain', 'Anna')
-          cy.get('@secondBlog').should('not.contain', 'remove')
-        })
-      })
-
       it('ordered according to likes with the blog with the most likes being first', function () {
 
         cy.contains('First class tests').parent('div').as('firstBlog')
@@ -160,6 +137,29 @@ describe('Blog app', function() {
         cy.get('.blog').eq(0).should('contain', 'Second class tests')
         cy.get('.blog').eq(1).should('contain', 'First class tests')
         cy.get('.blog').eq(2).should('contain', 'Third class tests')
+      })
+
+      describe('delete blogs', function () {
+
+        it('the user who created a blog can delete it', function() {
+          cy.contains('Second class tests').parent('div').as('secondBlog')
+          cy.contains('Second class tests').find('button').click()
+          cy.get('@secondBlog').contains('remove').click()
+          cy.get('html').should('not.contain', 'Second class tests')
+        })
+
+        it('only the creator can see the delete button of a blog', function() {
+
+          cy.contains('Log out').click()
+          cy.login({ username: 'Anna', password: 'secret' })
+          cy.contains('Anna logged in')
+
+          cy.contains('Second class tests').parent('div').as('secondBlog')
+          cy.contains('Second class tests').find('button').click()
+          cy.get('@secondBlog').contains('Alex')
+          cy.get('@secondBlog').should('not.contain', 'Anna')
+          cy.get('@secondBlog').should('not.contain', 'remove')
+        })
       })
     })
   })
