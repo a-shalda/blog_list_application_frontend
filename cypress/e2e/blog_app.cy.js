@@ -160,5 +160,33 @@ describe('Blog app', function() {
         })
       })
     })
+
+    describe('when blogs are by different authors', function() {
+      beforeEach(function() {
+        cy.login({ username: 'Alex', password: 'secret' })
+        cy.contains('Alex logged in')
+        cy.createBlog({ title: 'First class tests', author: 'Robert C. Martin', url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html' })
+        cy.contains('First class tests')
+
+        cy.contains('Log out').click()
+        cy.login({ username: 'Anna', password: 'secret' })
+        cy.contains('Anna logged in')
+      })
+
+      it.only('when liking a blog of a different author, the blog\'s author does not get replaced with current user', function() {
+        cy.contains('First class tests')
+        cy.contains('First class tests').parent('div').as('blog')
+        cy.contains('First class tests').find('button').click()
+        cy.contains('Alex')
+        cy.get('@blog').should('not.contain', 'Anna')
+        cy.get('@blog').should('not.contain', 'remove')
+
+        cy.get('@blog').contains('like').click()
+        cy.get('@blog').contains(/^Likes: 1/)
+
+        cy.get('@blog').should('not.contain', 'remove')
+        cy.contains('Alex')
+      })
+    })
   })
 })
