@@ -29,9 +29,6 @@ const App = () => {
         const updatedBlog = {
           ...blog,
           likes: increasedLikes,
-          user: {
-            ...user
-          }
         }
         return updatedBlog
       }

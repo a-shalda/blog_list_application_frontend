@@ -173,7 +173,7 @@ describe('Blog app', function() {
         cy.contains('Anna logged in')
       })
 
-      it.only('when liking a blog of a different author, the blog\'s author does not get replaced with current user', function() {
+      it('when liking a blog of a different author, the blog\'s author does not get replaced with current user', function() {
         cy.contains('First class tests')
         cy.contains('First class tests').parent('div').as('blog')
         cy.contains('First class tests').find('button').click()
